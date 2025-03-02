@@ -66,11 +66,19 @@
         .wrapper .page h2 {
             color: #fff;
             position: absolute;
-            top: 50%;
-            left: 50%;
             transform: translateX(-50%) translateY(-50%);
             text-transform: uppercase;
             font-size: 3em;
+            text-align: center;
+        }
+
+        .wrapper .page h3 {
+            color: #fff;
+            position: absolute;
+            transform: translateX(-50%) translateY(-50%);
+            text-transform: uppercase;
+            font-size: 1em;
+            font-weight: 200;
         }
 
         /* 各個頁面的背景漸變色 */
@@ -78,8 +86,80 @@
             background: linear-gradient(10deg, #66a6b8 20%, #5471B9 80%);
         }
 
+        .wrapper .page1 h2 {
+            top: 50%;
+            left: 50%;
+        }
+
+        .wrapper .page1 h3 {
+            top: 70%;
+            left: 50%;
+        }
+
         .wrapper .page2 {
             background: linear-gradient(45deg, #f29c54 0%, #DB4367 100%);
+        }
+
+        .wrapper .page2 h2 {
+            top: 20%;
+            left: 50%;
+            white-space: nowrap;
+        }
+
+        .wrapper .page2 h3 {
+            top: 30%;
+            left: 50%;
+            white-space: nowrap;
+        }
+
+        /* 技能條樣式 */
+        .skills-container {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .skill-bar-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .skill-item {
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .skill-name {
+            font-size: 1.2em;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            transition: width 3s ease-in-out;
+            width: 0;
+        }
+
+        .wrapper.active-page2 .skill-progress {
+            width: var(--progress-width);
+        }
+
+        .skill-level-text {
+            text-align: right;
+            margin-left: 10px;
         }
 
         .wrapper .page3 {
@@ -121,6 +201,22 @@
 
         .wrapper.active-page4 .page4 {
             transform: scale(1);
+        }
+
+        /* 照片樣式 */
+        .my-img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            object-fit: cover;
+            opacity: 0.5;
+            content: url('./wu_pc.png');
+        }
+
+        @media (max-width: 767px) {
+            .my-img {
+                content: url('./wu_sm.png');
+            }
         }
 
         /* 導航面板樣式 */
@@ -269,17 +365,67 @@
 
 <body>
     <header class="page-header">
-        <a data-page="1">首頁</a>
-        <a data-page="2">關於</a>
-        <a data-page="3">作品</a>
-        <a data-page="4">聯繫</a>
+        <a data-page="1">Home</a>
+        <a data-page="2">Professional</a>
+        <a data-page="3">Portfolio</a>
+        <a data-page="4">Contact</a>
     </header>
     <div class="wrapper active-page1">
         <div class="page page1">
-            <h2>First page</h2>
+            <img class="my-img">
+            <h2>I'm <br> WUCHUNTING</h2>
+            <h3>Frontend Developer& <br> Backend Developer& <br> Full Stack Developer</h3>
         </div>
         <div class="page page2">
-            <h2>Second page</h2>
+            <h2>01 PROFESSIONAL</h2>
+            <h3>MY KNOWLEDGE LEVEL IN SOFTWARE</h3>
+            <div class="skills-container">
+                <div class="skill-item">
+                    <div class="skill-name">JAVA & PHP</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--progress-width: 75%"></div>
+                        </div>
+                        <h4 class="skill-level-text">75%</h4>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">NODE.JS</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--progress-width: 80%"></div>
+                        </div>
+                        <h4 class="skill-level-text">80%</h4>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">REACT & VUE</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--progress-width: 90%"></div>
+                        </div>
+                        <h4 class="skill-level-text">90%</h4>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">REACT NATIVE</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--progress-width: 90%"></div>
+                        </div>
+                        <h4 class="skill-level-text">90%</h4>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">HTML & CSS & JAVASCRIPT</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--progress-width: 80%"></div>
+                        </div>
+                        <h4 class="skill-level-text">80%</h4>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="page page3">
             <h2>Third page</h2>
