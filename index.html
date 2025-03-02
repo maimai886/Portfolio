@@ -2,10 +2,12 @@
 <html lang="en">
 
 <head>
+    <!-- 設定基本的文檔屬性 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Pages</title>
     <style>
+        /* 重置所有元素的基本樣式 */
         *,
         *:before,
         *:after {
@@ -14,6 +16,7 @@
             padding: 0;
         }
 
+        /* 內部元素的共用定位樣式 */
         .inner {
             content: "";
             position: absolute;
@@ -21,6 +24,7 @@
             left: 50%;
         }
 
+        /* 設定基本的頁面容器樣式 */
         html,
         body {
             width: 100%;
@@ -28,12 +32,14 @@
             overflow: hidden;
         }
 
+        /* 響應式設計 - 移動設備字體縮小 */
         @media (max-width: 767px) {
             body {
                 font-size: 70%;
             }
         }
 
+        /* 主要包裝容器樣式 */
         .wrapper {
             position: absolute;
             top: 0;
@@ -45,6 +51,7 @@
             transform-style: preserve-3d;
         }
 
+        /* 單個頁面的基本樣式 */
         .wrapper .page {
             position: relative;
             width: 100%;
@@ -55,6 +62,7 @@
             will-change: transform;
         }
 
+        /* 頁面標題樣式 */
         .wrapper .page h2 {
             color: #fff;
             position: absolute;
@@ -65,6 +73,7 @@
             font-size: 3em;
         }
 
+        /* 各個頁面的背景漸變色 */
         .wrapper .page1 {
             background: linear-gradient(10deg, #66a6b8 20%, #5471B9 80%);
         }
@@ -81,6 +90,7 @@
             background: linear-gradient(160deg, #412F2F 15%, #6B2686 85%);
         }
 
+        /* 頁面切換時的動畫效果 */
         .wrapper.active-page1 {
             transform: translateY(0%);
         }
@@ -113,6 +123,7 @@
             transform: scale(1);
         }
 
+        /* 導航面板樣式 */
         .nav-panel {
             position: fixed;
             top: 50%;
@@ -123,15 +134,18 @@
             will-change: transform, opacity;
         }
 
+        /* 導航面板隱藏時的樣式 */
         .nav-panel.invisible {
             opacity: 0;
             transform: translateY(-50%) scale(0.5);
         }
 
+        /* 導航列表樣式 */
         .nav-panel ul {
             list-style-type: none;
         }
 
+        /* 導航按鈕基本樣式 */
         .nav-panel .nav-btn {
             position: relative;
             overflow: hidden;
@@ -145,6 +159,7 @@
             will-change: border-color, transform;
         }
 
+        /* 導航按鈕內部圓點樣式 */
         .nav-panel .nav-btn:after {
             content: "";
             position: absolute;
@@ -160,6 +175,7 @@
             will-change: transform, opacity;
         }
 
+        /* 導航按鈕激活和懸停狀態 */
         .nav-panel .nav-btn.active:after,
         .nav-panel .nav-btn:hover:after {
             transform: translateX(-50%) translateY(-50%) scale(0.7);
@@ -175,6 +191,7 @@
             background-color: yellow;
         }
 
+        /* 滾動按鈕樣式 */
         .nav-panel .scroll-btn {
             position: absolute;
             left: 0;
@@ -188,6 +205,7 @@
             transition: border-color 0.3s;
         }
 
+        /* 上下滾動按鈕的特定樣式 */
         .nav-panel .scroll-btn.up {
             top: -1.6em;
             transform: rotate(-45deg);
@@ -202,6 +220,7 @@
             border-color: yellow;
         }
 
+        /* 底部檢出鏈接樣式 */
         .check-out {
             position: absolute;
             bottom: 1rem;
@@ -217,10 +236,44 @@
             padding-bottom: 0.3rem;
             border-bottom: 0.2rem solid;
         }
+
+        /* 頁面頂部導航欄樣式 */
+        .page-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            z-index: 1000;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        /* 頂部導航鏈接樣式 */
+        .page-header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .page-header a:hover {
+            color: yellow;
+        }
     </style>
 </head>
 
 <body>
+    <header class="page-header">
+        <a data-page="1">首頁</a>
+        <a data-page="2">關於</a>
+        <a data-page="3">作品</a>
+        <a data-page="4">聯繫</a>
+    </header>
     <div class="wrapper active-page1">
         <div class="page page1">
             <h2>First page</h2>
@@ -249,30 +302,56 @@
     </div>
 
     <script>
+        /**
+         * 頁面滾動和導航功能的主要腳本
+         * 實現了以下功能：
+         * 1. 滾輪滾動切換頁面
+         * 2. 點擊導航按鈕切換頁面
+         * 3. 點擊頂部導航鏈接切換頁面
+         * 4. 點擊上下滾動按鈕切換頁面
+         */
         document.addEventListener('DOMContentLoaded', function () {
             'use strict';
 
-            var wrap = document.querySelector(".wrapper"),
-                pages = document.querySelectorAll(".page").length,
-                scrolling = false,
-                currentPage = 1,
-                navPanel = document.querySelector(".nav-panel"),
-                scrollBtn = document.querySelectorAll(".scroll-btn"),
-                navBtn = document.querySelectorAll(".nav-btn");
+            // 初始化所有需要的DOM元素
+            var wrap = document.querySelector(".wrapper"),          // 包裝器元素
+                pages = document.querySelectorAll(".page").length,  // 頁面總數
+                scrolling = false,                                  // 是否正在滾動的標誌
+                currentPage = 1,                                    // 當前頁面編號
+                navPanel = document.querySelector(".nav-panel"),    // 導航面板
+                scrollBtn = document.querySelectorAll(".scroll-btn"),// 上下滾動按鈕
+                navBtn = document.querySelectorAll(".nav-btn"),     // 導航按鈕
+                headerLinks = document.querySelectorAll(".page-header a"); // 頂部導航鏈接
 
+            /**
+             * 管理頁面切換時的類名和狀態
+             * 1. 更新wrapper的active-page類
+             * 2. 更新導航按鈕的active狀態
+             * 3. 處理過渡動畫期間的導航面板可見性
+             */
             function manageClasses() {
+                // 移除所有active-page類
                 wrap.className = wrap.className.replace(/active-page[0-9]+/g, '');
+                // 添加當前頁面的active-page類
                 wrap.classList.add("active-page" + currentPage);
+                // 移除所有導航按鈕的active類
                 navBtn.forEach(function (btn) { btn.classList.remove("active"); });
+                // 為當前頁面的導航按鈕添加active類
                 document.querySelector(".nav-btn.nav-page" + currentPage).classList.add("active");
+                // 在過渡期間隱藏導航面板
                 navPanel.classList.add("invisible");
                 scrolling = true;
+                // 1秒後重新顯示導航面板
                 setTimeout(function () {
                     navPanel.classList.remove("invisible");
                     scrolling = false;
                 }, 1000);
             }
 
+            /**
+             * 向上導航函數
+             * 當當前頁面大於1時，切換到上一頁
+             */
             function navigateUp() {
                 if (currentPage > 1) {
                     currentPage--;
@@ -280,6 +359,10 @@
                 }
             }
 
+            /**
+             * 向下導航函數
+             * 當當前頁面小於總頁面數時，切換到下一頁
+             */
             function navigateDown() {
                 if (currentPage < pages) {
                     currentPage++;
@@ -287,6 +370,10 @@
                 }
             }
 
+            /**
+             * 監聽滾輪事件
+             * deltaY < 0 表示向上滾動，否則向下滾動
+             */
             document.addEventListener("wheel", function (e) {
                 if (!scrolling) {
                     if (e.deltaY < 0) {
@@ -297,6 +384,10 @@
                 }
             });
 
+            /**
+             * 為滾動按鈕添加點擊事件監聽器
+             * 根據按鈕類型（up/down）決定滾動方向
+             */
             scrollBtn.forEach(function (btn) {
                 btn.addEventListener("click", function () {
                     if (btn.classList.contains("up")) {
@@ -307,14 +398,22 @@
                 });
             });
 
+            /**
+             * 為導航按鈕添加點擊事件監聽器
+             * 點擊時直接跳轉到目標頁面
+             */
             navBtn.forEach(function (btn) {
                 btn.addEventListener("click", function () {
+                    // 確保不在滾動中且不是當前活動的按鈕
                     if (!scrolling && !this.classList.contains("active")) {
                         var target = this.getAttribute("data-target");
+                        // 更新頁面類名
                         wrap.className = wrap.className.replace(/active-page[0-9]+/g, '');
                         wrap.classList.add("active-page" + target);
+                        // 更新導航按鈕狀態
                         navBtn.forEach(function (btn) { btn.classList.remove("active"); });
                         this.classList.add("active");
+                        // 處理過渡動畫
                         navPanel.classList.add("invisible");
                         currentPage = parseInt(target, 10);
                         scrolling = true;
@@ -325,8 +424,21 @@
                     }
                 });
             });
-        });
 
+            /**
+             * 為頂部導航鏈接添加點擊事件監聽器
+             * 點擊時跳轉到對應頁面
+             */
+            headerLinks.forEach(function(link) {
+                link.addEventListener("click", function() {
+                    if (!scrolling) {
+                        var pageNum = this.getAttribute("data-page");
+                        currentPage = parseInt(pageNum, 10);
+                        manageClasses();
+                    }
+                });
+            });
+        });
     </script>
 
 </body>
