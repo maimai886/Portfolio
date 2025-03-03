@@ -515,13 +515,22 @@
                     manageClasses();
                 }
             }
-
             /**
              * 監聽滾輪事件
              * deltaY < 0 表示向上滾動，否則向下滾動
+             * 添加滾動閾值,避免過於敏感
              */
+            let lastScrollTime = 0;
+            const scrollThreshold = 10; // 滾動閾值
+            const scrollCooldown = 100; // 滾動冷卻時間(毫秒)
+
             document.addEventListener("wheel", function (e) {
-                if (!scrolling) {
+                const now = Date.now();
+                if (!scrolling && 
+                    now - lastScrollTime > scrollCooldown && 
+                    Math.abs(e.deltaY) > scrollThreshold) {
+                    
+                    lastScrollTime = now;
                     if (e.deltaY < 0) {
                         navigateUp();
                     } else {
